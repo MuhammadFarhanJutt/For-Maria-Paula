@@ -18,10 +18,10 @@ class BuyerController extends Controller
         $this->middleware('auth');
     }
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function index()
     {
         $buyers = Buyer::orderBy('id', 'desc')->paginate(10);
@@ -30,10 +30,10 @@ class BuyerController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Show the form for creating a new resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function create()
     {
         $opacity_value = DB::table('site_info')->where('attr_name', 'form_opacity')->get()->toArray();
@@ -41,15 +41,15 @@ class BuyerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
     public function store(Request $request)
     {
         
-           $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'buyer_featured_image'           => 'mimes:jpeg,jpg,png,gif|required|max:20000', 
             'buyer_item_code'                => 'nullable|string|max:255|unique:buyers',
             'buyer_category'                 => 'required',
@@ -58,33 +58,33 @@ class BuyerController extends Controller
             'buyer_pro_title'                => 'required|min:5|max:255',
             'buyer_pro_description'          => 'required|min:5|max:255',
             'buyer_location'                 => 'required'
-          ]);
+        ]);
 
 
-            $buyer = new Buyer;
-            $buyer->user()->associate($request->user());
-            $buyer->buyer_item_code             = $request->buyer_item_code;
-            $buyer->buyer_category              = $request->buyer_category;
-            $buyer->buyer_sale_price            = $request->buyer_sale_price;
-            $buyer->buyer_website               = $request->buyer_website;
-            $buyer->buyer_pro_title             = $request->buyer_pro_title;
-            $buyer->buyer_pro_description       = $request->buyer_pro_description;
-            $buyer->buyer_location              = $request->buyer_location;
+        $buyer = new Buyer;
+        $buyer->user()->associate($request->user());
+        $buyer->buyer_item_code             = $request->buyer_item_code;
+        $buyer->buyer_category              = $request->buyer_category;
+        $buyer->buyer_sale_price            = $request->buyer_sale_price;
+        $buyer->buyer_website               = $request->buyer_website;
+        $buyer->buyer_pro_title             = $request->buyer_pro_title;
+        $buyer->buyer_pro_description       = $request->buyer_pro_description;
+        $buyer->buyer_location              = $request->buyer_location;
 
-            if ($request->hasFile('buyer_featured_image')) {
+        if ($request->hasFile('buyer_featured_image')) {
             $image = $request->file('buyer_featured_image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $location = public_path('uploads/buyer/' . $filename);
             Image::make($image)->resize(280,320)->save($location);
 
             $buyer->buyer_featured_image = $filename;
-            }
+        }
 
-            $buyer->save();
+        $buyer->save();
 
 
-            Session::flash('success', 'The post was successfully published!');
-            return redirect()->route('buyer.show', $buyer->id);
+        Session::flash('success', 'The post was successfully published!');
+        return redirect()->route('buyer.show', $buyer->id);
     }
 
     /**
@@ -119,58 +119,55 @@ class BuyerController extends Controller
      */
     public function edit($id)
     {
-      $buyer = Buyer::find($id);
-      if(auth()->user()->id !== $buyer->user_id) {
-        return redirect('home')->with('error', 'You are not authorized');
-      }
-      return view('pages.buyer.edit')->withBuyer($buyer);
+        $buyer = Buyer::find($id);
+        if(auth()->user()->id !== $buyer->user_id)
+        {
+            return redirect('home')->with('error', 'You are not authorized');
+        }
+        return view('pages.buyer.edit')->withBuyer($buyer);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    * Update the specified resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
     public function update(Request $request, $id)
     {
-      //validate the data before use it
-      $this->validate($request, array(
-        'buyer_featured_image'           => 'sometimes|image',
-        'buyer_item_code'                => 'required',
-        'buyer_category'                 => 'required',
-        'buyer_sale_price'               => 'required|integer',
-        'buyer_website'                  => 'required|max:255',
-        'buyer_pro_title'                => 'required|min:5|max:255',
-        'buyer_pro_description'          => 'required',
-        'buyer_location'                 => 'required'
-      ));
-      $buyer = Buyer::find($id);
+        $this->validate($request, array(
+            'buyer_featured_image'           => 'sometimes|image',
+            'buyer_item_code'                => 'required',
+            'buyer_category'                 => 'required',
+            'buyer_sale_price'               => 'required|integer',
+            'buyer_website'                  => 'required|max:255',
+            'buyer_pro_title'                => 'required|min:5|max:255',
+            'buyer_pro_description'          => 'required',
+            'buyer_location'                 => 'required'
+        ));
+        $buyer = Buyer::find($id);
+        $buyer->buyer_item_code             = $request->input('buyer_item_code');
+        $buyer->buyer_category              = $request->input('buyer_category');
+        $buyer->buyer_sale_price            = $request->input('buyer_sale_price');
+        $buyer->buyer_website               = $request->input('buyer_website');
+        $buyer->buyer_pro_title             = $request->input('buyer_pro_title');
+        $buyer->buyer_pro_description       = $request->input('buyer_pro_description');
+        $buyer->buyer_location              = $request->input('buyer_location');
+        if($request->hasFile('buyer_featured_image'))
+        {
+            $image = $request->file('buyer_featured_image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $location = public_path('uploads/buyer/' . $filename);
+            Image::make($image)->save($location);
+            $oldfilename = $buyer->buyer_featured_image;
+            $buyer->buyer_featured_image = $filename;
+            Storage::delete($oldfilename);
+        }
 
-      $buyer->buyer_item_code             = $request->input('buyer_item_code');
-      $buyer->buyer_category              = $request->input('buyer_category');
-      $buyer->buyer_sale_price            = $request->input('buyer_sale_price');
-      $buyer->buyer_website               = $request->input('buyer_website');
-      $buyer->buyer_pro_title             = $request->input('buyer_pro_title');
-      $buyer->buyer_pro_description       = $request->input('buyer_pro_description');
-      $buyer->buyer_location              = $request->input('buyer_location');
-
-
-
-      if ($request->hasFile('buyer_featured_image')) {
-        $image = $request->file('buyer_featured_image');
-        $filename = time() . '.' . $image->getClientOriginalExtension();
-        $location = public_path('uploads/buyer/' . $filename);
-        Image::make($image)->save($location);
-        $oldfilename = $buyer->buyer_featured_image;
-        $buyer->buyer_featured_image = $filename;
-        Storage::delete($oldfilename);
-      }
-
-      $buyer->save();
-      Session::flash('success', 'This post was successfully changed.');
-      return redirect()->route('buyer.show', $buyer->id);
+        $buyer->save();
+        Session::flash('success', 'This post was successfully changed.');
+        return redirect()->route('buyer.show', $buyer->id);
     }
 
     /**
@@ -181,13 +178,13 @@ class BuyerController extends Controller
      */
     public function destroy($id)
     {
-      $buyer = Buyer::find($id);
-      Storage::delete($buyer->buyer_featured_image);
+        $buyer = Buyer::find($id);
+        Storage::delete($buyer->buyer_featured_image);
 
-      $buyer->delete();
+        $buyer->delete();
 
-      Session::flash('success', 'The post was sucessfully deleted.');
+        Session::flash('success', 'The post was sucessfully deleted.');
 
-      return redirect()->route('buyer.index');
+        return redirect()->route('buyer.index');
     }
 }
