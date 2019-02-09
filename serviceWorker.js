@@ -1,5 +1,6 @@
-/**writing this code for Maria Paula
-*@author Muhammad Farhan 
+/**
+*@author Muhammad Farhan
+*@copyright Muhammad Farhan
 ***********************************/
 self.addEventListener('push', function (event) {
     if (!(self.Notification && self.Notification.permission === 'granted')) {
