@@ -3,8 +3,8 @@
 ## About Repository
 
 This is sample repository, many companies like to show sample code of their employees before hiring. I am creating this repository so thay can easily take a look and i am fully reponsible for this code.
- 
-This code is written by [Muhammad Farhan](https://www.linkedin.com/in/iamdeveloper120/"):
+
+This code is written by [Muhammad Farhan](https://www.linkedin.com/in/iamdeveloper120):
 
 
 ## Security Vulnerabilities
@@ -13,4 +13,4 @@ If you discover this code samples a security vulnerability or copyrighted or may
 
 ## Auther
 
-[Muhammad Farhan](https://www.linkedin.com/in/iamdeveloper120/") - web application developer - committed to deliver
+[Muhammad Farhan](https://www.linkedin.com/in/iamdeveloper120) - web application developer - committed to deliver
