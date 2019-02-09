@@ -12,4 +12,4 @@ If you discover this code samples a security vulnerability or copyrighted or may
 
 ## Auther
 
-<p align="center"> [Muhammad Farhan](https://www.linkedin.com/in/iamdeveloper120/").</p>
+[Muhammad Farhan](https://www.linkedin.com/in/iamdeveloper120/") - web application developer - committed to deliver
