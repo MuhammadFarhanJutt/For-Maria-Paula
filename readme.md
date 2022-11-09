@@ -2,7 +2,7 @@
 
 ## About Repository
 
-This is sample repository, many companies like to show sample code of their employees before hiring. I am creating this repository so thay can easily take a look and i am fully reponsible for this code.
+This is a sample repository, many companies require to come up with some sample code during thir hiring process, so here I am writing this repository so I can show them.
 
 This code is written by [Muhammad Farhan](https://www.linkedin.com/in/iamdeveloper120):
 
